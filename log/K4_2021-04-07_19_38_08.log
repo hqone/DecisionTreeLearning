@@ -1,0 +1,112 @@
+Czas startu: 2021-04-07 19:38:08
+
+Witam w programie realizuj¹cym algorytm budowy drzewa decyzyjnego oraz testuj¹cym jego prawid³owoœæ.
+
+Tabela z danymi treningowymi:
+    count_lines  count_corners  count_right_angles  parallel_lines ratio_1_1 item_class
+0             4              4                   4               2       yes    Kwadrat
+1             4              4                   4               2       yes    Kwadrat
+2             4              4                   4               2       yes    Kwadrat
+3             4              4                   4               2       yes    Kwadrat
+4             4              4                   4               2        no  Prostokat
+5             4              4                   4               2        no  Prostokat
+6             4              4                   4               2        no  Prostokat
+7             0              0                   0               0       yes       Kolo
+8             0              0                   0               0       yes       Kolo
+9             0              0                   0               0       yes       Kolo
+10            0              0                   0               0        no     Elipsa
+11            0              0                   0               0        no     Elipsa
+12            0              0                   0               0        no     Elipsa
+13            0              0                   0               0        no     Elipsa
+14            0              0                   0               0        no     Elipsa
+15            0              0                   0               0        no     Elipsa
+16            3              3                   1               0       yes    Trojkat
+17            3              3                   1               0       yes    Trojkat
+18            3              3                   1               0       yes    Trojkat
+
+Przekazuje dane do funkcji realizuj¹cej algorytm budowy drzewa decyzyjnego build_tree(df_training)
+
+Badany zbiór:     count_lines  count_corners  count_right_angles  parallel_lines ratio_1_1 item_class
+0             4              4                   4               2       yes    Kwadrat
+1             4              4                   4               2       yes    Kwadrat
+2             4              4                   4               2       yes    Kwadrat
+3             4              4                   4               2       yes    Kwadrat
+4             4              4                   4               2        no  Prostokat
+5             4              4                   4               2        no  Prostokat
+6             4              4                   4               2        no  Prostokat
+7             0              0                   0               0       yes       Kolo
+8             0              0                   0               0       yes       Kolo
+9             0              0                   0               0       yes       Kolo
+10            0              0                   0               0        no     Elipsa
+11            0              0                   0               0        no     Elipsa
+12            0              0                   0               0        no     Elipsa
+13            0              0                   0               0        no     Elipsa
+14            0              0                   0               0        no     Elipsa
+15            0              0                   0               0        no     Elipsa
+16            3              3                   1               0       yes    Trojkat
+17            3              3                   1               0       yes    Trojkat
+18            3              3                   1               0       yes    Trojkat
+Entropia badanego zbioru: 2.2597992234005675
+Entropia zwyciêskiego atrybutu(count_lines): 0.7979610241436924
+Atrybut z najwiêksz¹ wartoœci¹ zysku informacyjnego: count_lines
+Sprawdzamy wartoœæ(count_lines): 0
+Wartoœæ niepozwala na jednoznaczne okreœlenie, sprawdzamy kolejny atrybut.
+Badany zbiór:    count_lines  count_corners  count_right_angles  parallel_lines ratio_1_1 item_class
+0            0              0                   0               0       yes       Kolo
+1            0              0                   0               0       yes       Kolo
+2            0              0                   0               0       yes       Kolo
+3            0              0                   0               0        no     Elipsa
+4            0              0                   0               0        no     Elipsa
+5            0              0                   0               0        no     Elipsa
+6            0              0                   0               0        no     Elipsa
+7            0              0                   0               0        no     Elipsa
+8            0              0                   0               0        no     Elipsa
+Entropia badanego zbioru: 0.9182958340544896
+Entropia zwyciêskiego atrybutu(ratio_1_1): 0
+Atrybut z najwiêksz¹ wartoœci¹ zysku informacyjnego: ratio_1_1
+Sprawdzamy wartoœæ(ratio_1_1): no
+Zidentyfikowane jednoznacznie: Elipsa
+Sprawdzamy wartoœæ(ratio_1_1): yes
+Zidentyfikowane jednoznacznie: Kolo
+Zakoñczenie sprawdzania dla atrybutu: ratio_1_1
+Sprawdzamy wartoœæ(count_lines): 3
+Zidentyfikowane jednoznacznie: Trojkat
+Sprawdzamy wartoœæ(count_lines): 4
+Wartoœæ niepozwala na jednoznaczne okreœlenie, sprawdzamy kolejny atrybut.
+Badany zbiór:    count_lines  count_corners  count_right_angles  parallel_lines ratio_1_1 item_class
+0            4              4                   4               2       yes    Kwadrat
+1            4              4                   4               2       yes    Kwadrat
+2            4              4                   4               2       yes    Kwadrat
+3            4              4                   4               2       yes    Kwadrat
+4            4              4                   4               2        no  Prostokat
+5            4              4                   4               2        no  Prostokat
+6            4              4                   4               2        no  Prostokat
+Entropia badanego zbioru: 0.9852281360342515
+Entropia zwyciêskiego atrybutu(ratio_1_1): 0
+Atrybut z najwiêksz¹ wartoœci¹ zysku informacyjnego: ratio_1_1
+Sprawdzamy wartoœæ(ratio_1_1): no
+Zidentyfikowane jednoznacznie: Prostokat
+Sprawdzamy wartoœæ(ratio_1_1): yes
+Zidentyfikowane jednoznacznie: Kwadrat
+Zakoñczenie sprawdzania dla atrybutu: ratio_1_1
+Zakoñczenie sprawdzania dla atrybutu: count_lines
+Wynikowe drzewo decyzyjne:
+{
+    "count_lines": {
+        "0": {
+            "ratio_1_1": {
+                "no": "Elipsa",
+                "yes": "Kolo"
+            }
+        },
+        "3": "Trojkat",
+        "4": {
+            "ratio_1_1": {
+                "no": "Prostokat",
+                "yes": "Kwadrat"
+            }
+        }
+    }
+}
+Podaj œcie¿kê do obrazów testowych (*.JPG) lub zostaw puste aby u¿yæ domyœlnego katalogu.
+Domyœlnie: [C:\workspace\python\msi\K4\obrazy\testowe].

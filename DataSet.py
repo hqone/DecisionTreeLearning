@@ -1,54 +1,80 @@
+import glob
+import logging
+
 import cv2
 import numpy as np
 from ImageGenerator import ColorRGB, ImageGenerator
 import copy
 
+logger = logging.getLogger()
 
 class DataSet:
+
+    def generate_dataset_from_dir(self, search_path):
+
+        file_paths = glob.glob("{}\\*.jpg".format(search_path))
+
+        if not file_paths:
+            logger.info("W podanej ścieżce nie znaleziono obrazów jpg.")
+
+        dataset = []
+        for file_path in file_paths:
+            dataset.append(
+                self.get_meta_data_from_image(
+                    cv2.imread(file_path),
+                    file_path.rsplit('\\', maxsplit=1)[1]
+                ))
+        return dataset
 
     def generate_training_dataset(self):
         ig = ImageGenerator()
 
         return [
-            self.get_meta_data_from_image(ig.draw_square(256, 20, ColorRGB.GREEN, 3), 'Square'),
-            self.get_meta_data_from_image(ig.draw_square(256, 20, ColorRGB.GREEN, 3), 'Square'),
-            self.get_meta_data_from_image(ig.draw_square(256, 20, ColorRGB.GREEN, 3), 'Square'),
-            self.get_meta_data_from_image(ig.draw_rectangle(256, 210, 20, ColorRGB.BLACK, 4), 'Rectangle'),
-            self.get_meta_data_from_image(ig.draw_rectangle(205, 220, 20, ColorRGB.BLACK, 4), 'Rectangle'),
-            self.get_meta_data_from_image(ig.draw_rectangle(350, 300, 20, ColorRGB.BLACK, 4), 'Rectangle'),
-            self.get_meta_data_from_image(ig.draw_circle(256, 60, ColorRGB.RED, 2), 'Circle'),
-            self.get_meta_data_from_image(ig.draw_circle(256, 110, ColorRGB.BLACK, 1), 'Circle'),
-            self.get_meta_data_from_image(ig.draw_circle(256, 110, ColorRGB.BLACK, 1), 'Circle'),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (60, 100), 20, ColorRGB.BLUE, 3), 'Ellipse'),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (50, 100), 0, ColorRGB.BLUE, 3), 'Ellipse'),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (120, 30), 0, ColorRGB.BLUE, 3), 'Ellipse'),
-            self.get_meta_data_from_image(ig.draw_right_triangle(256, 20, ColorRGB.GREEN, 1), 'Triangle'),
-            self.get_meta_data_from_image(ig.draw_right_triangle(512, 20, ColorRGB.BLACK, 1), 'Triangle'),
-            self.get_meta_data_from_image(ig.draw_right_triangle(200, 20, ColorRGB.BLACK, 1), 'Triangle'),
+            self.get_meta_data_from_image(ig.draw_square(456, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_square(276, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_square(226, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_square(356, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_rectangle(256, 210, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_rectangle(205, 220, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_rectangle(350, 300, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_circle(256, 60, ColorRGB.RED, 2), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_circle(256, 110, ColorRGB.BLACK, 1), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_circle(256, 110, ColorRGB.BLACK, 1), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (60, 100), 20, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (50, 100), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (120, 30), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (120, 30), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (100, 30), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (110, 30), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(256, 20, ColorRGB.GREEN, 1), 'Trojkat'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(512, 20, ColorRGB.BLACK, 1), 'Trojkat'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(200, 20, ColorRGB.BLACK, 1), 'Trojkat'),
         ]
 
     def generate_test_dataset(self):
         ig = ImageGenerator()
 
         return [
-            self.get_meta_data_from_image(ig.draw_square(200, 20, ColorRGB.GREEN, 3)),
-            self.get_meta_data_from_image(ig.draw_square(512, 20, ColorRGB.GREEN, 3)),
-            self.get_meta_data_from_image(ig.draw_square(256, 20, ColorRGB.GREEN, 3)),
-            self.get_meta_data_from_image(ig.draw_rectangle(220, 210, 20, ColorRGB.BLACK, 4)),
-            self.get_meta_data_from_image(ig.draw_rectangle(300, 200, 20, ColorRGB.BLACK, 4)),
-            self.get_meta_data_from_image(ig.draw_rectangle(250, 300, 20, ColorRGB.BLACK, 4)),
-            self.get_meta_data_from_image(ig.draw_circle(256, 70, ColorRGB.RED, 2)),
-            self.get_meta_data_from_image(ig.draw_circle(512, 100, ColorRGB.BLACK, 1)),
-            self.get_meta_data_from_image(ig.draw_circle(256, 120, ColorRGB.BLACK, 1)),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (30, 110), 20, ColorRGB.BLUE, 3)),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (60, 120), 0, ColorRGB.BLUE, 3)),
-            self.get_meta_data_from_image(ig.draw_ellipse(256, (130, 30), 0, ColorRGB.BLUE, 3)),
-            self.get_meta_data_from_image(ig.draw_right_triangle(300, 20, ColorRGB.GREEN, 1)),
-            self.get_meta_data_from_image(ig.draw_right_triangle(550, 20, ColorRGB.BLACK, 1)),
-            self.get_meta_data_from_image(ig.draw_right_triangle(200, 20, ColorRGB.BLACK, 1)),
+            self.get_meta_data_from_image(ig.draw_circle(512, 100, ColorRGB.BLACK, 1), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_rectangle(300, 200, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_square(200, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (130, 30), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_square(512, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(550, 20, ColorRGB.BLACK, 1), 'Trojkat'),
+            self.get_meta_data_from_image(ig.draw_square(256, 20, ColorRGB.GREEN, 3), 'Kwadrat'),
+            self.get_meta_data_from_image(ig.draw_circle(256, 120, ColorRGB.BLACK, 1), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(200, 20, ColorRGB.BLACK, 1), 'Trojkat'),
+            self.get_meta_data_from_image(ig.draw_rectangle(220, 210, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_rectangle(250, 300, 20, ColorRGB.BLACK, 4), 'Prostokat'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (60, 120), 0, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_circle(256, 70, ColorRGB.RED, 2), 'Kolo'),
+            self.get_meta_data_from_image(ig.draw_ellipse(256, (30, 110), 20, ColorRGB.BLUE, 3), 'Elipsa'),
+            self.get_meta_data_from_image(ig.draw_right_triangle(300, 20, ColorRGB.GREEN, 1), 'Trojkat'),
         ]
 
     def get_meta_data_from_image(self, img: np.ndarray, item_class: str = None):
+
+        # cv2.imwrite('{}\\obrazy\\{}_{}.jpg'.format(os.getcwd(), item_class, randint(0, 1000)), img)
 
         lines_img_array, parallel_lines = self.find_lines(img)
         corners_pos = self.find_corners(img, lines_img_array)
