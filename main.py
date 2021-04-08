@@ -9,6 +9,11 @@ import logging
 
 epsilon = np.finfo(float).eps
 
+
+'''
+Defincja loggera.
+Konfiguruje logi tak aby pisały na stdout (ekran) oraz do pliku.
+'''
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
@@ -22,6 +27,8 @@ logger.addHandler(logging.StreamHandler())
 def find_entropy(df):
     """
     Funkcja zwracająca entropię zmiennej objaśnianej (target).
+    :param df:
+    :return:
     """
     label = df.keys()[-1]
     entropy = 0
@@ -34,7 +41,10 @@ def find_entropy(df):
 
 def find_entropy_attribute(df, attribute):
     """
-    Funkcja zwraca entropię dla wskazanego atrybutu.
+    Funkcja zwraca entropię dla wskazanego atrybutu. 
+    :param df: 
+    :param attribute: 
+    :return:
     """
     label = df.keys()[-1]
     target_variables = df[label].unique()
@@ -56,7 +66,10 @@ def find_winner(df):
     """
     Funkcja zwraca nazwę atrybutu według, którego nastąpi podział (atrybut
     posiadający największy zysk informacyjny).
+    :param df:
+    :return:
     """
+
     logger.info("Badany zbiór: {}".format(df.to_string()))
     entropy_attr = []
     IG = []
@@ -72,10 +85,23 @@ def find_winner(df):
 
 
 def get_subtable(df, node, value):
+    """
+    Zwraca tylko tabele z określonymi wartościami.
+    :param df:
+    :param node:
+    :param value:
+    :return:
+    """
     return df[df[node] == value].reset_index(drop=True)
 
 
 def build_tree(df, tree=None):
+    """
+    Algorytm DTL. Serce Budowy Drzewa Decyzyjnego.
+    :param df:
+    :param tree:
+    :return:
+    """
     label = df.keys()[-1]
 
     node = find_winner(df)
@@ -109,6 +135,12 @@ def build_tree(df, tree=None):
 
 
 def predict(inst, tree):
+    """
+    Klasa dokonująca klasyfikacji zbioru danych na podstawie przekazanego drzewa decyzyjnego.
+    :param inst:
+    :param tree:
+    :return:
+    """
     for nodes in tree.keys():
 
         value = inst[nodes]
@@ -124,6 +156,9 @@ def predict(inst, tree):
 
 
 if __name__ == '__main__':
+    '''
+    Główne sterowanie programu.
+    '''
 
     logger.info("Czas startu: {:%Y-%m-%d %H:%M:%S}\n".format(datetime.now()))
     logger.info(

@@ -10,9 +10,19 @@ logger = logging.getLogger()
 
 
 class DataSet:
+    """
+    Klasa przogtowująca zbiór danych na podstawie obrazów opisujących figury które się na nich znajdują.
+    self.generate_dataset_from_dir(search_path) -
+    self.generate_training_dataset() - Może też
+    """
 
     def generate_dataset_from_dir(self, search_path):
+        """
+        Generuje dane na podstawie obrazów JPG z katalogu.
 
+        :param search_path:
+        :return:
+        """
         file_paths = glob.glob("{}\\*.jpg".format(search_path))
 
         if not file_paths:
@@ -28,6 +38,11 @@ class DataSet:
         return dataset
 
     def generate_training_dataset(self):
+        """
+        Generuje obrazy w locie na podstawie parametrów przekazanych do funkci opencv.
+        Użyta klasa pomocnicza ImageGenerator()
+        :return:
+        """
         ig = ImageGenerator()
 
         return [
@@ -53,6 +68,12 @@ class DataSet:
         ]
 
     def generate_test_dataset(self):
+        """
+        Funkcja użyta raz do wygenerowania obrazów testowych, które są używane jako obrazy z domyślnej lokalizacji.
+        Użyta klasa pomocnicza ImageGenerator()
+        :param self:
+        :return:
+        """
         ig = ImageGenerator()
 
         return [
@@ -74,6 +95,12 @@ class DataSet:
         ]
 
     def get_meta_data_from_image(self, img: np.ndarray, item_class: str = None):
+        '''
+        Pobranie atrybutów opisujących obraz img
+        :param img:
+        :param item_class:
+        :return:
+        '''
 
         # cv2.imwrite('{}\\obrazy\\{}_{}.jpg'.format(os.getcwd(), item_class, randint(0, 1000)), img)
 
@@ -94,6 +121,11 @@ class DataSet:
         return meta_data
 
     def ratio_figure(self, img_in):
+        '''
+        Czy figura ma identyczną wysokość co szerokość?
+        :param img_in:
+        :return:
+        '''
         img = copy.deepcopy(img_in)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         img = cv2.bitwise_not(img)
@@ -104,11 +136,21 @@ class DataSet:
         return 'yes' if width / height == 1.0 else 'no'
 
     def draw_clean_img(self, img):
+        '''
+        Zwraca puste płótno o wymiarach przekazanego obrazu.
+        :param img:
+        :return:
+        '''
         clean_img = copy.deepcopy(img)
         clean_img.fill(0)
         return clean_img
 
     def draw_contours(self, img):
+        '''
+        Zwraca obraz który zawiera tylko kontury przekazanego obrazu img
+        :param img:
+        :return:
+        '''
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         contours_img = self.draw_clean_img(gray_img)
 
@@ -118,6 +160,11 @@ class DataSet:
         return contours_img
 
     def find_lines(self, img: np.ndarray):
+        '''
+        Wyszukje linie w przekazanym obrazie.
+        :param img:
+        :return:
+        '''
 
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         contours_img = self.draw_contours(img)
@@ -162,6 +209,12 @@ class DataSet:
         return lines_img_array, parallel_lines
 
     def find_corners(self, img: np.ndarray, lines_img_array):
+        '''
+        Zwraca liczbe kątów w obrazie.
+        :param img:
+        :param lines_img_array:
+        :return:
+        '''
 
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         circle_img = self.draw_clean_img(gray_img)
@@ -192,6 +245,12 @@ class DataSet:
         return corners_pos
 
     def find_right_angles(self, img, corners_pos):
+        '''
+        Zwraca liczbę kątów prostych w obrazie.
+        :param img:
+        :param corners_pos:
+        :return:
+        '''
         gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         circle_img = self.draw_clean_img(gray_img)
         corner_points_img = self.draw_clean_img(gray_img)
@@ -225,7 +284,14 @@ class DataSet:
         return right_angles
 
     def find_pixels(self, img, x, y, radius=20):
-
+        '''
+        Zwraca pozycje pikseli wokół punktu o współrzędnych x i y i promieniu 20 pikseli.
+        :param img:
+        :param x:
+        :param y:
+        :param radius:
+        :return:
+        '''
         height, width = img.shape[:2]
 
         crop_img = img[
