@@ -8,6 +8,7 @@ import copy
 
 logger = logging.getLogger()
 
+
 class DataSet:
 
     def generate_dataset_from_dir(self, search_path):
